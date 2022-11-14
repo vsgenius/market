@@ -1,0 +1,130 @@
+# примеры API-запросов
+
+@baseUrl = http://localhost:8000/api/
+
+# 
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "url": "/Users/vb/Desktop/PF/diplom/my_diplom/shop1.yaml"
+}
+
+###
+# 
+GET {{baseUrl}}product/2/
+Content-Type: application/json
+# Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+###
+# 
+POST {{baseUrl}}product/
+Content-Type: application/json
+# Authorization: Token NXNZZovuUnZUPomr8v181HKZPLlGv8xz
+
+{
+    "external_id": 0,
+    "name": "Смартфон Apple iPhone XS Max 512GB (золотистый)",
+    "model": "apple/iphone/xs-max",
+    "items": "\"Диагональ (дюйм)\": 6.1\r\n      \"Разрешение (пикс)\": 1792x828\r\n      \"Встроенная память (Гб)\": 256\r\n      \"Цвет\": черный",
+    "category_id": 2,
+    "user": 1
+  }
+###
+# 
+PUT {{baseUrl}}product/
+Content-Type: application/json
+# Authorization: Token NXNZZovuUnZUPomr8v181HKZPLlGv8xz
+
+{
+    "id":8,
+    "external_id": 0,
+    "name": "Смартфон Apple iPhone XS Max 512GB (золотистый)",
+    "model": "apple/iphone/xs-max",
+    "items": "\"Диагональ (дюйм)\": 6.1\r\n      \"Разрешение (пикс)\": 1792x828\r\n      \"Встроенная память (Гб)\": 256\r\n      \"Цвет\": черный",
+    "category_id": 1,
+    "user": 1
+  }
+###
+# 
+DELETE {{baseUrl}}product/6/
+Content-Type: application/json
+# Authorization: Token NXNZZovuUnZUPomr8v181HKZPLlGv8xz
+
+{
+    "id": 7
+  }
+###
+# 
+GET {{baseUrl}}shop/
+Content-Type: application/json
+# Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+###
+# 
+GET {{baseUrl}}order/
+Content-Type: application/json
+# Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+###
+# 
+GET {{baseUrl}}basket/
+Content-Type: application/json
+# Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+###
+# 
+GET {{baseUrl}}auth/users/
+Content-Type: application/json
+# Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+###
+# 
+post {{baseUrl}}auth/users/
+Content-Type: application/json
+# Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+{
+  "email": "belichvladimir@mail.ru",
+  "password": "Bv09082014+",
+  "password2": "Bv09082014+",
+  "first_name":"bb",
+  "last_name":"aa",
+  "username":"a",
+  "type":"buyer"
+}
+###
+# 
+post {{baseUrl}}api/auth/users/activation/
+Content-Type: application/json
+# Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+{
+  "email": "admin@admin.ru",
+  "password": "admin",
+}
+###
+# 
+POST {{baseUrl}}/register_user/
+Content-Type: application/json
+Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+{
+  "email": "belichvladimir@mail.ru",
+  "password": "1234",
+  "password2": "1234",
+  "first_name":"bb",
+  "last_name":"aa",
+  "username":"a",
+  "type":"buyer"
+}
+###
+
+# 
+GET {{baseUrl}}order
+Content-Type: application/json
+Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+###
+
+
+

@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<h1>
+    Корзина
+</h1>
+<hr>
+<table class="table" id="table">
+  <thead>
+    <tr>
+        <th scope="col">Магазин</th>
+      <th scope="col">Название</th>
+      <th scope="col">Количество</th>
+        <th scope="col">Цена</th>
+        <th scope="col">#</th>
+    </tr>
+  </thead>
+
+  <tbody id="tbody">
+  </tbody>
+
+</table>
+{% if count != 0 %}
+                  <button type="button" class="btn btn-primary">Подтвердить</button>
+{%endif%}
+</div>
+
+{% endblock %}
