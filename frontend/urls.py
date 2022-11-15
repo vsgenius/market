@@ -25,4 +25,8 @@ urlpatterns = [
          name='verify_order_by_email'),
     path('invalid_verify_order/', TemplateView.as_view(template_name='invalid_verify_order.html'),
          name='invalid_verify_order'),
+    path('load_products/', TemplateView.as_view(template_name='load_products.html'),
+         name='load_products'),
+    path('create_product/', TemplateView.as_view(template_name='create_product.html'),
+         name='create_product'),
 ]

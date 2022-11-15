@@ -57,7 +57,7 @@ class OrdersViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        data=[serializer.data,request.user.id]
+        data=[serializer.data,request.user.id,request.user.type]
         return Response(data)
 
 

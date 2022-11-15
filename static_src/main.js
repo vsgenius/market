@@ -80,9 +80,21 @@ function buildorders(){
   fetch(url)
   .then((resp)=>resp.json())
   .then(function(data){
+    console.log(data)
+    if (data[2]=='buyer'){
+      buildorders_buyer(wrapper,data)
+    }
+    else if (data[2]=='shop'){
+      buildorders_shop(wrapper,data)
+    }
+    else if (data[2]=='stuff'){
+      buildorders_stuff(wrapper,data)
+    }
+  })
+}
+function buildorders_buyer(wrapper,data){
   var list = data[0]
     for(var i in list){
-      if (list[i].user==data[1]) {
     var item = ` 
     <tr>
       <td>${list[i].id}</td>
@@ -91,12 +103,60 @@ function buildorders(){
       <td>${list[i].status}</td>
       <td>
       <button type="button" class="btn btn-danger" id="${list[i].id}">Отменить</button></td>
-      </tr>  `      
-wrapper.innerHTML +=item }
+        </tr>  `
+
+wrapper.innerHTML +=item 
 }
-    
-  })
   }
+  function buildorders_stuff(wrapper,data){
+    var list = data[0]
+      for(var i in list){
+        if (list[i].user==data[1]) {
+      var item = ` 
+      <tr>
+        <td>${list[i].id}</td>
+        <td> ${list[i].modified}</td>
+        <td>${list[i].price}</td>
+        <td>          <select class="form-select" aria-label="Default select example">
+        <option selected>${list[i].status}</option>
+        <option value="1">confirmed</option>
+        <option value="2">assembled</option>
+        <option value="3">sent</option>
+        <option value="4">delivered</option>
+        <option value="5">canceled</option>
+      </select></td>
+        <td>
+        <button type="button" class="btn btn-danger" id="${list[i].id}">Изменить</button>
+        <button type="button" class="btn btn-danger" id="${list[i].id}">Отменить</button></td>
+          </tr>  `
+  
+  wrapper.innerHTML +=item }
+  }
+    }
+  function buildorders_shop(wrapper,data){
+      var list = data[0]
+        for(var i in list){
+          if (list[i].user==data[1]) {
+        var item = ` 
+        <tr>
+          <td>${list[i].id}</td>
+          <td> ${list[i].modified}</td>
+          <td>${list[i].price}</td>
+          <td>          <select class="form-select" aria-label="Default select example">
+  <option selected>${list[i].status}</option>
+  <option value="1">confirmed</option>
+  <option value="2">assembled</option>
+  <option value="3">sent</option>
+  <option value="4">delivered</option>
+  <option value="5">canceled</option>
+</select></td>
+          <td>
+          <button type="button" class="btn btn-danger" id="${list[i].id}">Изменить</button></td>
+            </tr>  `
+    
+    wrapper.innerHTML +=item }
+    }
+      }
 function buildbasket(){
     var wrapper = document.getElementById('tbody')
     var url = '/api/v1/basket/'
@@ -179,7 +239,7 @@ function buildproduct(){
       for(var i in list){
       var button = document.getElementById(list[i].id)  
       button.addEventListener('click',function(e){
-        if (data[1]!=null) {
+        if (data[1]!=null)  {
           addbasket(list[e.target.id-1],data[1])
         }
         else {
