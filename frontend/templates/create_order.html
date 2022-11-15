@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <p>Создан заказ. Для подтверждения заказа перейдите по ссылке направленной на электронную почту</p>
+        <a href="{% url 'orders'%}">Заказы</a>
+    </div>
+{% endblock %}

@@ -7,8 +7,8 @@ from django_rest_passwordreset.tokens import get_token_generator
 
 STATE_CHOICES = (
     ('basket', 'Статус корзины'),
-    ('new', 'Новый'),
     ('confirmed', 'Подтвержден'),
+    ('new','Новый'),
     ('assembled', 'Собран'),
     ('sent', 'Отправлен'),
     ('delivered', 'Доставлен'),
@@ -189,17 +189,29 @@ class ShopProducts(models.Model):
         verbose_name_plural = 'Товары в магазинах'
 
 
+class Order(models.Model):
+    status = models.CharField(max_length=50, choices=STATE_CHOICES)
+    user = models.ForeignKey(User, related_name='Ordeк',verbose_name='Пользователь', on_delete=models.CASCADE)
+    create_at = models.DateTimeField(auto_created=True, auto_now_add=True)
+    modified = models.DateTimeField(auto_created=True, auto_now=True)
+    price = models.PositiveIntegerField(verbose_name='Цена')
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+
 class OrderProduct(models.Model):
-    # order = models.ForeignKey(Order, related_name='OrderProducts',verbose_name='Заказ', on_delete=models.CASCADE)
+    order = models.IntegerField(blank=True)
     product = models.ForeignKey(Product, related_name='OrderProducts',verbose_name='Товар', on_delete=models.CASCADE)
     shop = models.ForeignKey(Shop,related_name='OrderProducts', verbose_name='Магазин', on_delete=models.CASCADE)
     shop_products = models.ForeignKey(ShopProducts, related_name='OrderProducts',verbose_name='Наличие в магазине', on_delete=models.CASCADE)
     quantity = models.IntegerField(verbose_name='Количество')
-    status = models.CharField(max_length=50, choices=STATE_CHOICES)
     user = models.ForeignKey(User, related_name='OrderProducts',verbose_name='OrderProducts', on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_created=True, auto_now_add=True)
     modified = models.DateTimeField(auto_created=True, auto_now=True)
     price = models.PositiveIntegerField(verbose_name='Цена')
+
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'

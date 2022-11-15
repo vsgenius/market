@@ -5,14 +5,27 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
-from backend.models import User, Product, OrderProduct, Category, ShopProducts
+from backend.models import User, Product, OrderProduct, Category, ShopProducts, Order
 from frontend.forms import UserCreationForm, MyAuthentificationForm
-from frontend.utils import verify_by_email
+from frontend.utils import verify_by_email, verify_order_by_email
+
+
+def orders(request):
+    user = request.user
+    orders = Order.objects.all()
+    context = {'products': orders}
+    return render(request, 'orders.html', context)
+
+
+def create_order(request):
+    verify_order_by_email()
+    context = {}
+    return render(request, 'orders.html', context)
 
 
 def basket(request):
     user = request.user
-    products = OrderProduct.objects.filter(user_id=user.pk,status='basket')
+    products = OrderProduct.objects.filter(user_id=user.pk)
     context = {'products': products,
                'count':len(products)}
     return render(request, 'basket.html', context)
@@ -53,6 +66,57 @@ class EmailVerify(View):
         except (TypeError, ValueError, OverflowError,User.DoesNotExist,ValidationError):
             user = None
         return user
+
+
+class OrderVerify(View):
+
+    def get(self,request,uidb64,token,order_id):
+        user = self.get_user(uidb64)
+        if user is not None and default_token_generator.check_token(user,token):
+            orders = Order.objects.get(pk=order_id,user_id=user.pk)
+            if orders.pk is None:
+                verify_order_by_email(request, order_id)
+                return redirect('invalid_verify_order')
+            orders.status = 'confirmed'
+            orders.save()
+            return redirect('verify_order_by_email')
+        verify_order_by_email(request,order_id)
+        return redirect('invalid_verify_order')
+
+
+    @staticmethod
+    def get_user(uidb64):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError,User.DoesNotExist,ValidationError):
+            user = None
+        return user
+
+
+class CreateOrder(View):
+    template_name = 'create_order.html'
+
+    def get(self,request,id):
+        context = {}
+        verify_order_by_email(request,id)
+        return redirect('create_order')
+
+    def post(self,request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            password = form.cleaned_data.get('password1')
+            email = form.cleaned_data.get('email')
+            user = authenticate(password=password,username=email)
+            # login(request,user)
+            verify_by_email(request,user)
+            return redirect('create_order')
+        context = {
+            'form':form
+        }
+        return render(request,self.template_name,context)
 
 
 class Register(View):

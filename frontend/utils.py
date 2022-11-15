@@ -24,3 +24,26 @@ def verify_by_email(request,user):
         to=[user.email],
     )
     email.send()
+
+
+def verify_order_by_email(request,id):
+    current_site = get_current_site(request)
+    user = request.user
+    context = {
+        'user':user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': default_token_generator.make_token(user),
+        'order_id':id
+
+    }
+    message = render_to_string(
+        'verify_email.html',
+        context=context
+    )
+    email = EmailMessage(
+        'Verify email',
+        message,
+        to=[user.email],
+    )
+    email.send()

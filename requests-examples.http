@@ -1,6 +1,6 @@
 # примеры API-запросов
 
-@baseUrl = http://localhost:8000/api/
+@baseUrl = http://localhost:8000/api/v1/
 
 # 
 POST {{baseUrl}}
@@ -12,10 +12,36 @@ Content-Type: application/json
 
 ###
 # 
-GET {{baseUrl}}product/2/
+POST {{baseUrl}}auth/users/
 Content-Type: application/json
 # Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
 
+{
+    "username": "user1",
+    "email": "user1@user.ru",
+    "password": "Qw98765+"
+}
+###
+POST  {{baseUrl}}orders/
+Content-Type: application/json
+# Authorization: Token  
+
+{
+    "price": 350970,
+    "status": "basket",
+    "user":1
+}
+###
+# 
+POST {{baseUrl}}auth/users/
+Content-Type: application/json
+# Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
+
+{
+    "username": "user1",
+    "email": "user1@user.ru",
+    "password": "Qw98765+"
+}
 ###
 # 
 POST {{baseUrl}}product/

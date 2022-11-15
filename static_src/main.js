@@ -4,24 +4,99 @@ if (document.getElementById('list-product')!=null){
 if ((document.URL.match('basket'))!=null){
   buildbasket()
 }
-else {
-  countitemsbasket()
+if ((document.URL.match('orders'))!=null){
+  buildorders()
 }
-function countitemsbasket() {
-  var wrapper = document.getElementById('count_order')
-  var url = '/api/v1/basket/'
-  fetch(url)
-  .then((resp)=>resp.json())
-  .then(function(data){     
-    var count = 0
-    var list = data[0]
-    for(var i in list){
-        if (list[i].user_id==data[1] && list[i].status=='basket') {
-          count+=1
-  }}
-  wrapper.textContent=count
+
+function countitemsbasket(status) {
+  // var wrapper = document.getElementById('count_order')
+  // var url = '/api/v1/basket/'
+  // fetch(url)
+  // .then((resp)=>resp.json())
+  // .then(function(data){     
+  //   var count = 0
+  //   var list = data[0]
+  //   for(var i in list){
+  //       if (list[i].user_id==data[1] && list[i].status in status) {
+  //         count+=1
+  // }}
+  // wrapper.textContent=count
+  // })
+}
+function updatebasket(list,id){
+  var data=list[0]
+  console.log(data)
+  for(var i in data){
+    if (data[i].order==0) {
+  var url = '/api/v1/basket/'+data[i].id+'/'
+  fetch(url,{
+    method:'PUT',
+    headers: {
+      'Content-type':'application/json',
+      'X-CSRFToken':getCookie('csrftoken')
+    },
+    body:JSON.stringify({
+      'create_at':data[i].create_at,
+      'modified':data[i].modified,
+      'product_name':data[i].product_name,
+      'product_model':data[i].product_model,
+      'category':data[i].category,
+      'shop_name':data[i].shop_name,   
+      'order':id,
+      'price':data[i].price,
+      'quantity':data[i].quantity,
+      'product':data[i].product,
+      'shop':data[i].shop,
+      'shop_products':data[i].shop_products,
+      'user':data[i].user_id,
+    })
   })
 }
+}
+window.location.href = '/order_send_email/'+id;
+}
+function addorder(data,sum,count){
+  var url = '/api/v1/orders/'
+  fetch(url,{
+    method:'POST',
+    headers: {
+      'Content-type':'application/json',
+      'X-CSRFToken':getCookie('csrftoken')
+    },
+    body:JSON.stringify({
+      'price':sum,
+      'status':'basket',
+      'count':count,
+      'user':data[1],
+    })
+  }).then(response => response.json())
+  .then(function(commit){
+    var id = commit.id
+    updatebasket(data,id)
+  })}
+function buildorders(){
+  var wrapper = document.getElementById('tbody')
+  var url = '/api/v1/orders/'
+  fetch(url)
+  .then((resp)=>resp.json())
+  .then(function(data){
+  var list = data[0]
+    for(var i in list){
+      if (list[i].user==data[1]) {
+    var item = ` 
+    <tr>
+      <td>${list[i].id}</td>
+      <td> ${list[i].modified}</td>
+      <td>${list[i].price}</td>
+      <td>${list[i].status}</td>
+      <td>
+      <button type="button" class="btn btn-danger" id="${list[i].id}">Отменить</button></td>
+      </tr>  `      
+wrapper.innerHTML +=item }
+}
+    
+  })
+  }
 function buildbasket(){
     var wrapper = document.getElementById('tbody')
     var url = '/api/v1/basket/'
@@ -32,7 +107,7 @@ function buildbasket(){
     var count = 0
     var sum = 0
       for(var i in list){
-        if (list[i].user_id==data[1] && list[i].status=='basket') {
+        if (list[i].user_id==data[1] && (list[i].order==0 | list[i].order==null)) {
         count+=list[i].quantity
         sum+=list[i].price
       var item = ` 
@@ -54,7 +129,7 @@ wrapper.innerHTML +=`      <tr>
 <td>${sum}</td>
 <td> #</td>`
       for(var i in list){
-        if (list[i].user_id==data[1]) {
+        if (list[i].user_id==data[1] && list[i].order==0) {
       var button = document.getElementById(list[i].id)  
       button.addEventListener('click',function(e){
         // если пользователя нет то перейти на страницу регистрации
@@ -62,6 +137,12 @@ wrapper.innerHTML +=`      <tr>
       })
     }
     }
+    var confirm_basket = document.getElementById('confirm_basket') 
+    if (confirm_basket != null) {
+      confirm_basket.addEventListener('click',function(e){
+      // если пользователя нет то перейти на страницу регистрации
+      addorder(data,sum,count)
+      })}
     })
     }
 function buildproduct(){
@@ -102,7 +183,7 @@ function buildproduct(){
           addbasket(list[e.target.id-1],data[1])
         }
         else {
-          alert('Для оформления заказа необходимо осуществить вход')
+          window.location.href = '/login/'
         }
         // если пользователя нет то перейти на страницу регистрации
       })
@@ -142,7 +223,6 @@ function delbasket(data){
         })}
 function addbasket(data,user){
       var url = '/api/v1/basket/'
-      console.log()
       fetch(url,{
         method:'POST',
         headers: {
@@ -151,7 +231,7 @@ function addbasket(data,user){
         },
         body:JSON.stringify({
           'quantity':1,
-          'status':'basket',
+          'order':0,
           'product':data.product_id,
           'shop':data.shop_id,
           'shop_products':data.id,

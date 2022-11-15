@@ -22,7 +22,7 @@
         </li>
           {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link active" href="#">Мои заказы</a>
+          <a class="nav-link active" href="{% url 'orders'%}">Мои заказы</a>
         </li>
           {% endif %}
            <li class="nav-item">
@@ -43,11 +43,11 @@
 {%endif%}
                      {% if user.is_authenticated %}
     <a class="nav-link" aria-current="page" href="{% url 'basket'%}">Корзина</a>
-                      {% if count_order %}
-  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="count_order">
-        {{count_order}}
-    <span class="visually-hidden">unread messages</span>
-            {%endif%}
+<!--                      {% if count_order %}-->
+<!--  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="count_order">-->
+<!--        {{count_order}}-->
+<!--    <span class="visually-hidden">unread messages</span>-->
+<!--            {%endif%}-->
         </span>
                   {%endif%}
     </div>
