@@ -2,18 +2,18 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">User and password</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Введите имя и пароль</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="alert alert-danger d-none" role="alert"></div>
-      <form action="#" method="post" id="form_ajax">
+      <form action="{%url 'login_ajax'%}" method="post" id="form_ajax">
       <div class="modal-body">
-<!--          {{ login_ajax }}-->
-<!--          {% csrf_token %}-->
+          {{ login_ajax }}
+          {% csrf_token %}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Enter</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <button type="submit" class="btn btn-primary">Вход</button>
       </div>
       </form>
     </div>

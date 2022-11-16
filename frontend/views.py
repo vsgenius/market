@@ -1,13 +1,16 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import ValidationError
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from backend.models import User, Product, OrderProduct, Category, ShopProducts, Order
 from frontend.forms import UserCreationForm, MyAuthentificationForm
 from frontend.utils import verify_by_email, verify_order_by_email
+
+User = get_user_model()
 
 
 def orders(request):
@@ -40,6 +43,20 @@ def home(request):
                 'categories':categories,
                'count_order':orders}
     return render(request, 'home.html', context)
+
+
+class LoginAjaxView(View):
+
+    def post(self,request):
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        if email and password:
+            user =authenticate(email=email,password=password)
+            if user:
+                login(request,user)
+                return redirect('home')
+            return JsonResponse(data={'error':'Email or Pass not valid'}, status=400)
+        return JsonResponse(data={'error': 'Email or Pass is Empty'}, status=400)
 
 
 class MyLoginView(LoginView):

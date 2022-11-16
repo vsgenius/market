@@ -17,8 +17,8 @@ Content-Type: application/json
 # Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
 
 {
-    "username": "user1",
-    "email": "user1@user.ru",
+    "username": "user2",
+    "email": "user2@user.ru",
     "password": "Qw98765+"
 }
 ###
@@ -52,9 +52,8 @@ Content-Type: application/json
     "external_id": 0,
     "name": "Смартфон Apple iPhone XS Max 512GB (золотистый)",
     "model": "apple/iphone/xs-max",
-    "items": "\"Диагональ (дюйм)\": 6.1\r\n      \"Разрешение (пикс)\": 1792x828\r\n      \"Встроенная память (Гб)\": 256\r\n      \"Цвет\": черный",
-    "category_id": 2,
-    "user": 1
+    "items": """\"Диагональ (дюйм)\": 6.1\r\n      \"Разрешение (пикс)\": 1792x828\r\n      \"Встроенная память (Гб)\": 256\r\n      \"Цвет\": черный""",
+    "category": 2
   }
 ###
 # 
@@ -76,10 +75,6 @@ Content-Type: application/json
 DELETE {{baseUrl}}product/6/
 Content-Type: application/json
 # Authorization: Token NXNZZovuUnZUPomr8v181HKZPLlGv8xz
-
-{
-    "id": 7
-  }
 ###
 # 
 GET {{baseUrl}}shop/
@@ -88,7 +83,7 @@ Content-Type: application/json
 
 ###
 # 
-GET {{baseUrl}}order/
+GET {{baseUrl}}orders/
 Content-Type: application/json
 # Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
 
@@ -130,24 +125,9 @@ Content-Type: application/json
   "password": "admin",
 }
 ###
-# 
-POST {{baseUrl}}/register_user/
-Content-Type: application/json
-Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
-
-{
-  "email": "belichvladimir@mail.ru",
-  "password": "1234",
-  "password2": "1234",
-  "first_name":"bb",
-  "last_name":"aa",
-  "username":"a",
-  "type":"buyer"
-}
-###
 
 # 
-GET {{baseUrl}}order
+GET {{baseUrl}}orders/
 Content-Type: application/json
 Authorization: Token 000ffd5e067063d8a525d431bdd04c2d0d442a51
 ###

@@ -7,7 +7,29 @@ if ((document.URL.match('basket'))!=null){
 if ((document.URL.match('orders'))!=null){
   buildorders()
 }
+if ((document.URL.match('load_products'))!=null){
+  document.getElementById('formFile_button').addEventListener('click',function(e){
+    load_products()
+  })
+}
 
+function load_products(){
+  var file_path = document.getElementById('formFile').value
+  var url = '/api/v1/load_products/'
+  fetch(url,{
+    method:'POST',
+    headers: {
+      'Content-type':'application/json',
+      'X-CSRFToken':getCookie('csrftoken')
+    },
+    body:JSON.stringify({
+      'url':file_path
+    })
+  }).then(response => response.json())
+  .then(function(commit){
+    console.log(commit)
+  })
+}
 function countitemsbasket(status) {
   // var wrapper = document.getElementById('count_order')
   // var url = '/api/v1/basket/'
@@ -226,7 +248,7 @@ function buildproduct(){
           <div class="card-body">
             <h5 class="card-title">${list[i].product_name}</h5>
             <p class="card-text">${list[i].product_model}</p>
-                      <button type="submit" class="btn btn-primary" id="${list[i].id}">В корзину</button>
+                      <button type="submit" class="btn btn-success" id="${list[i].id}">В корзину</button>
           </div>
                       <div class="card-footer text-muted">
     
@@ -240,7 +262,7 @@ function buildproduct(){
       var button = document.getElementById(list[i].id)  
       button.addEventListener('click',function(e){
         if (data[1]!=null)  {
-          addbasket(list[e.target.id-1],data[1])
+              addbasket(data[0],e.target.id,data[1])
         }
         else {
           window.location.href = '/login/'
@@ -281,8 +303,13 @@ function delbasket(data){
           document.getElementById('tbody').innerHTML=''
           buildbasket()
         })}
-function addbasket(data,user){
+function addbasket(data,shopproduct_id,user){
       var url = '/api/v1/basket/'
+      for (const key in data) {
+        if (data[key].id==shopproduct_id) {
+          var shopproduct = data[key]
+        }
+      }
       fetch(url,{
         method:'POST',
         headers: {
@@ -292,15 +319,52 @@ function addbasket(data,user){
         body:JSON.stringify({
           'quantity':1,
           'order':0,
-          'product':data.product_id,
-          'shop':data.shop_id,
-          'shop_products':data.id,
+          'product':shopproduct.product_id,
+          'shop':shopproduct.shop_id,
+          'shop_products':shopproduct.id,
           'user':user,
-          'price':data.price_rrc
+          'price':shopproduct.price_rrc
         })
       })
       .then(function(response){
         countitemsbasket()
       })}
-
+$ (function($) {
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        $('#form_ajax').submit(function(e){
+        e.preventDefault()
+        console.log(this)
+        $.ajax({
+        type:this.method,
+        url: this.action,
+        data: $(this).serialize(),
+        headers: {'X-CSRFToken': getCookie('csrftoken')},
+        dataType:'json',
+        success:function(response){
+        console.log('ok',response)
+        window.location.reload()
+        },
+        error:function(response){
+            console.log('err',response)
+            if (response.status===400){
+            $('.alert-danger').text(response.responseJSON.error).removeClass('d-none')
+            }
+            }
+        })
+        })
+    })
   

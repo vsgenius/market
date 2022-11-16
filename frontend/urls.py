@@ -2,7 +2,8 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 
 from frontend.utils import verify_order_by_email
-from frontend.views import MyLoginView, EmailVerify, Register, home, basket, orders, OrderVerify, CreateOrder
+from frontend.views import MyLoginView, EmailVerify, Register, home, basket, orders, OrderVerify, CreateOrder, \
+    LoginAjaxView
 
 urlpatterns = [
     path('login/', MyLoginView.as_view(),name='login'),
@@ -29,4 +30,5 @@ urlpatterns = [
          name='load_products'),
     path('create_product/', TemplateView.as_view(template_name='create_product.html'),
          name='create_product'),
+    path('login_ajax/', LoginAjaxView.as_view(), name='login_ajax')
 ]
