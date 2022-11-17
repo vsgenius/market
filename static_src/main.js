@@ -6,13 +6,43 @@ if ((document.URL.match('basket'))!=null){
 }
 if ((document.URL.match('orders'))!=null){
   buildorders()
-}
+} 
 if ((document.URL.match('load_products'))!=null){
   document.getElementById('formFile_button').addEventListener('click',function(e){
     load_products()
   })
 }
-
+if ((document.URL.match('create_product'))!=null){
+  document.getElementById('add').addEventListener('click',function(e){
+    addproduct()
+  })
+}
+function addproduct(){
+  var url = '/api/v1/product/'
+  fetch(url,{
+    method:'POST',
+    headers: {
+      'Content-type':'application/json',
+      'X-CSRFToken':getCookie('csrftoken')
+    },
+    body:JSON.stringify({
+      'external':document.getElementById('external_id').value,
+      'name':document.getElementById('name').value,
+      'model':document.getElementById('model').value,
+      'category':document.getElementById('category').value,
+      'category_name':document.getElementById('category').value,
+      'user':1,
+      'items':document.getElementById('params').value
+    })
+  }).then(function(response){
+    if (response.status==201){
+      alert('Продукт добавлен')
+      window.location.href='/create_product/'
+    }
+    else {
+      alert('Ошибка при добавлении')
+    }
+  })}
 function load_products(){
   var file_path = document.getElementById('formFile').value
   var url = '/api/v1/load_products/'
@@ -27,7 +57,12 @@ function load_products(){
     })
   }).then(response => response.json())
   .then(function(commit){
-    console.log(commit)
+    if (commit.Status==true){
+      alert('Данные успешно загружены')
+    }
+    else {
+      alert('Ошбика при загрузке данных')
+    }
   })
 }
 function countitemsbasket(status) {
@@ -47,7 +82,6 @@ function countitemsbasket(status) {
 }
 function updatebasket(list,id){
   var data=list[0]
-  console.log(data)
   for(var i in data){
     if (data[i].order==0) {
   var url = '/api/v1/basket/'+data[i].id+'/'
@@ -102,7 +136,6 @@ function buildorders(){
   fetch(url)
   .then((resp)=>resp.json())
   .then(function(data){
-    console.log(data)
     if (data[2]=='buyer'){
       buildorders_buyer(wrapper,data)
     }
@@ -246,7 +279,7 @@ function buildproduct(){
     
       </div>
           <div class="card-body">
-            <h5 class="card-title">${list[i].product_name}</h5>
+            <h5 class="card-title" style="background-color: #e3f2fd;">${list[i].product_name}</h5>
             <p class="card-text">${list[i].product_model}</p>
                       <button type="submit" class="btn btn-success" id="${list[i].id}">В корзину</button>
           </div>
@@ -265,7 +298,7 @@ function buildproduct(){
               addbasket(data[0],e.target.id,data[1])
         }
         else {
-          window.location.href = '/login/'
+          window.location.href = '/'
         }
         // если пользователя нет то перейти на страницу регистрации
       })
@@ -304,67 +337,51 @@ function delbasket(data){
           buildbasket()
         })}
 function addbasket(data,shopproduct_id,user){
-      var url = '/api/v1/basket/'
-      for (const key in data) {
-        if (data[key].id==shopproduct_id) {
-          var shopproduct = data[key]
-        }
-      }
-      fetch(url,{
-        method:'POST',
-        headers: {
-          'Content-type':'application/json',
-          'X-CSRFToken':getCookie('csrftoken')
-        },
-        body:JSON.stringify({
-          'quantity':1,
-          'order':0,
-          'product':shopproduct.product_id,
-          'shop':shopproduct.shop_id,
-          'shop_products':shopproduct.id,
-          'user':user,
-          'price':shopproduct.price_rrc
-        })
-      })
-      .then(function(response){
-        countitemsbasket()
-      })}
+          var url = '/api/v1/basket/'
+          for (const key in data) {
+            if (data[key].id==shopproduct_id) {
+              var shopproduct = data[key]
+            }
+          }
+          fetch(url,{
+            method:'POST',
+            headers: {
+              'Content-type':'application/json',
+              'X-CSRFToken':getCookie('csrftoken')
+            },
+            body:JSON.stringify({
+              'quantity':1,
+              'order':0,
+              'product':shopproduct.product_id,
+              'shop':shopproduct.shop_id,
+              'shop_products':shopproduct.id,
+              'user':user,
+              'price':shopproduct.price_rrc
+            })
+          })
+          .then(function(response){
+            countitemsbasket()
+          })}
 $ (function($) {
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        $('#form_ajax').submit(function(e){
-        e.preventDefault()
-        console.log(this)
-        $.ajax({
-        type:this.method,
-        url: this.action,
-        data: $(this).serialize(),
-        headers: {'X-CSRFToken': getCookie('csrftoken')},
-        dataType:'json',
-        success:function(response){
-        console.log('ok',response)
-        window.location.reload()
-        },
-        error:function(response){
-            console.log('err',response)
-            if (response.status===400){
+  $('#form_ajax').submit(function(e){
+    e.preventDefault()
+    $.ajax({
+    type:this.method,
+    url: this.action,
+    data: $(this).serialize(),
+    headers: {'X-CSRFToken': getCookie('csrftoken')},
+    dataType:'json',
+    success:function(response){
+            console.log(response)
+            window.location.reload()
+    },
+    error:function(response){
+        if (response.status===400){
+          console.log(response)
             $('.alert-danger').text(response.responseJSON.error).removeClass('d-none')
-            }
-            }
-        })
-        })
+          }
+    }
+  })
+    })
     })
   

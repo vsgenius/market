@@ -1,9 +1,7 @@
 from django.urls import path, include
 from django.views.generic import TemplateView
-
-from frontend.utils import verify_order_by_email
 from frontend.views import MyLoginView, EmailVerify, Register, home, basket, orders, OrderVerify, CreateOrder, \
-    LoginAjaxView
+    LoginAjaxView, category
 
 urlpatterns = [
     path('login/', MyLoginView.as_view(),name='login'),
@@ -28,7 +26,7 @@ urlpatterns = [
          name='invalid_verify_order'),
     path('load_products/', TemplateView.as_view(template_name='load_products.html'),
          name='load_products'),
-    path('create_product/', TemplateView.as_view(template_name='create_product.html'),
+    path('create_product/', category,
          name='create_product'),
     path('login_ajax/', LoginAjaxView.as_view(), name='login_ajax')
 ]

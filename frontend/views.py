@@ -13,6 +13,13 @@ from frontend.utils import verify_by_email, verify_order_by_email
 User = get_user_model()
 
 
+def category(request):
+    user = request.user
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'create_product.html', context)
+
+
 def orders(request):
     user = request.user
     orders = Order.objects.all()
@@ -54,7 +61,8 @@ class LoginAjaxView(View):
             user =authenticate(email=email,password=password)
             if user:
                 login(request,user)
-                return redirect('home')
+
+                return JsonResponse(data={},status=201)
             return JsonResponse(data={'error':'Email or Pass not valid'}, status=400)
         return JsonResponse(data={'error': 'Email or Pass is Empty'}, status=400)
 
