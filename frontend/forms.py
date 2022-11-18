@@ -3,11 +3,19 @@ from django.contrib.auth.forms import (UserCreationForm as MyUserCreationForm, A
 from django import forms
 from django.core.exceptions import ValidationError
 
-from backend.models import USER_TYPE_CHOICES
+from backend.models import USER_TYPE_CHOICES, Category
 from .utils import verify_by_email
 
 
 User = get_user_model()
+
+
+def get_categories():
+    categories = Category.objects.all()
+    result = []
+    for category in categories:
+        result.append((category.id, category.name))
+    return result
 
 
 class AuthenticationAjaxForm(forms.Form):
@@ -24,6 +32,39 @@ class AuthenticationAjaxForm(forms.Form):
         widget=forms.PasswordInput(attrs={
             'autocomlete': 'current-password',
             'class':'form-control'})
+    )
+
+
+class CreateProductForm(forms.Form):
+    external = forms.IntegerField(
+        label=('Внешний ИД'),
+        widget=forms.TextInput(attrs={
+                                       'class':'form-control'})
+    )
+    name = forms.CharField(
+        label=('Наименование'),
+        max_length=254,
+        widget=forms.TextInput(attrs={
+                                      'class': 'form-control'})
+
+    )
+    model = forms.CharField(
+        label=('Модель'),
+        max_length=254,
+        widget=forms.TextInput(attrs={
+                                      'class': 'form-control'})
+    )
+    category = forms.ChoiceField(
+        label=('Категория'),
+        choices=get_categories(),
+        widget=forms.Select(attrs={"class": "form-select"})
+    )
+    items = forms.CharField(
+        label=('Параметры'),
+        widget=forms.Textarea(attrs={"class": "form-control"}))
+    user = forms.IntegerField(
+        widget=forms.HiddenInput(),
+        initial=User.pk
     )
 
 
@@ -94,7 +135,8 @@ class UserCreationForm(MyUserCreationForm):
     )
     type = forms.ChoiceField(
         label=('Type'),
-        choices=USER_TYPE_CHOICES)
+        choices=USER_TYPE_CHOICES,
+    widget=forms.Select(attrs={"class":"form-select"}))
 
     class Meta(MyUserCreationForm.Meta):
         model = User

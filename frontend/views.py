@@ -67,6 +67,20 @@ class LoginAjaxView(View):
         return JsonResponse(data={'error': 'Email or Pass is Empty'}, status=400)
 
 
+class CreateAjaxView(View):
+
+    def post(self,request):
+        user = request.user.id
+        external_id = request.POST.get('external_id')
+        model = request.POST.get('model')
+        name = request.POST.get('name')
+        category = request.POST.get('category')
+        items = request.POST.get('items')
+        if request.user.type=='shop' or request.user.type=='stuff':
+                return JsonResponse(data={},status=201)
+        return JsonResponse(data={'error':'Нет доступа'}, status=400)
+
+
 class MyLoginView(LoginView):
     form_class = MyAuthentificationForm
 

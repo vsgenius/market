@@ -173,7 +173,6 @@ wrapper.innerHTML +=item
         <td> ${list[i].modified}</td>
         <td>${list[i].price}</td>
         <td>          <select class="form-select" aria-label="Default select example">
-        <option selected>${list[i].status}</option>
         <option value="1">confirmed</option>
         <option value="2">assembled</option>
         <option value="3">sent</option>
@@ -272,16 +271,16 @@ function buildproduct(){
         <div class="col">
 
         <div class="card">
-                      <div class="card-header text-muted">
+                      <div class="card-header text-muted style="background-color: #e3f2fd;"">
                           ${list[i].category}
                               Магазин:   ${list[i].shop_name}
     
     
       </div>
           <div class="card-body">
-            <h5 class="card-title" style="background-color: #e3f2fd;">${list[i].product_name}</h5>
+            <h5 class="card-title">${list[i].product_name}</h5>
             <p class="card-text">${list[i].product_model}</p>
-                      <button type="submit" class="btn btn-success" id="${list[i].id}">В корзину</button>
+                      <button type="submit" class="btn btn-primary" id="${list[i].id}">В корзину</button>
           </div>
                       <div class="card-footer text-muted">
     
@@ -296,9 +295,6 @@ function buildproduct(){
       button.addEventListener('click',function(e){
         if (data[1]!=null)  {
               addbasket(data[0],e.target.id,data[1])
-        }
-        else {
-          window.location.href = '/'
         }
         // если пользователя нет то перейти на страницу регистрации
       })
@@ -384,4 +380,52 @@ $ (function($) {
   })
     })
     })
+$ (function($) {
+      $('#form_ajax').submit(function(e){
+        console.log(this)
+        e.preventDefault()
+        $.ajax({
+        type:this.method,
+        url: this.action,
+        data: $(this).serialize(),
+        headers: {'X-CSRFToken': getCookie('csrftoken')},
+        dataType:'json',
+        success:function(response){
+                console.log(response)
+                window.location.reload()
+        },
+        error:function(response){
+          console.log(response)
+            if (response.status===400){
+              console.log(response)
+                $('.alert-danger').text(response.responseJSON.error).removeClass('d-none')
+              }
+        }
+      })
+        })
+        })
+$ (function($) {
+          $('#form_create_product').submit(function(e){
+            console.log(this) 
+            e.preventDefault()
+            $.ajax({
+            type:this.method,
+            url: this.action,
+            data: $(this).serialize(),
+            headers: {'X-CSRFToken': getCookie('csrftoken')},
+            dataType:'json',
+            success:function(response){
+                    console.log(response)
+                    window.location.reload()
+            },
+            error:function(response){
+              console.log(response)
+                if (response.status===400){
+                  console.log(response)
+                    $('.alert-danger').text(response.responseJSON.error).removeClass('d-none')
+                  }
+            }
+          })
+            })
+            })
   

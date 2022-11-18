@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.views.generic import TemplateView
 from frontend.views import MyLoginView, EmailVerify, Register, home, basket, orders, OrderVerify, CreateOrder, \
-    LoginAjaxView, category
+    LoginAjaxView, category, CreateAjaxView
 
 urlpatterns = [
     path('login/', MyLoginView.as_view(),name='login'),
@@ -28,5 +28,6 @@ urlpatterns = [
          name='load_products'),
     path('create_product/', category,
          name='create_product'),
-    path('login_ajax/', LoginAjaxView.as_view(), name='login_ajax')
+    path('login_ajax/', LoginAjaxView.as_view(), name='login_ajax'),
+    path('create_product_form/',CreateAjaxView.as_view(),name='create_product_form')
 ]

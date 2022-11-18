@@ -15,7 +15,6 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
-import backend.apps
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
@@ -73,7 +72,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'config.context_processor.get_context_data'
+                'config.context_processor.get_context_data',
+                'config.context_processor.get_context_data2'
 
             ],
         },
