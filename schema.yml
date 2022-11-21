@@ -1,0 +1,1558 @@
+openapi: 3.0.3
+info:
+  title: Your Project API
+  version: 1.0.0
+  description: Your project description
+paths:
+  /api/v1/auth/users/:
+    get:
+      operationId: auth_users_list
+      tags:
+      - auth
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+    post:
+      operationId: auth_users_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreate'
+          description: ''
+  /api/v1/auth/users/{id}/:
+    get:
+      operationId: auth_users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - auth
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: auth_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: auth_users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: auth_users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - auth
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/users/activation/:
+    post:
+      operationId: auth_users_activation_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Activation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Activation'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activation'
+          description: ''
+  /api/v1/auth/users/me/:
+    get:
+      operationId: auth_users_me_retrieve
+      tags:
+      - auth
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: auth_users_me_update
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: auth_users_me_partial_update
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: auth_users_me_destroy
+      tags:
+      - auth
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/users/resend_activation/:
+    post:
+      operationId: auth_users_resend_activation_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEmailReset'
+          description: ''
+  /api/v1/auth/users/reset_email/:
+    post:
+      operationId: auth_users_reset_email_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEmailReset'
+          description: ''
+  /api/v1/auth/users/reset_email_confirm/:
+    post:
+      operationId: auth_users_reset_email_confirm_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsernameResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UsernameResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UsernameResetConfirm'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsernameResetConfirm'
+          description: ''
+  /api/v1/auth/users/reset_password/:
+    post:
+      operationId: auth_users_reset_password_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendEmailReset'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendEmailReset'
+          description: ''
+  /api/v1/auth/users/reset_password_confirm/:
+    post:
+      operationId: auth_users_reset_password_confirm_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetConfirm'
+          description: ''
+  /api/v1/auth/users/set_email/:
+    post:
+      operationId: auth_users_set_email_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUsername'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetUsername'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SetUsername'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetUsername'
+          description: ''
+  /api/v1/auth/users/set_password/:
+    post:
+      operationId: auth_users_set_password_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SetPassword'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetPassword'
+          description: ''
+  /api/v1/auth_token/token/login/:
+    post:
+      operationId: auth_token_token_login_create
+      description: Use this endpoint to obtain user authentication token.
+      tags:
+      - auth_token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenCreate'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenCreate'
+          description: ''
+  /api/v1/auth_token/token/logout/:
+    post:
+      operationId: auth_token_token_logout_create
+      description: Use this endpoint to logout user (remove user authentication token).
+      tags:
+      - auth_token
+      responses:
+        '200':
+          description: No response body
+  /api/v1/basket/:
+    get:
+      operationId: basket_list
+      tags:
+      - basket
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasketSerializers'
+          description: ''
+    post:
+      operationId: basket_create
+      tags:
+      - basket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasketSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BasketSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BasketSerializers'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasketSerializers'
+          description: ''
+  /api/v1/basket/{id}/:
+    get:
+      operationId: basket_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - basket
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasketSerializers'
+          description: ''
+    put:
+      operationId: basket_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - basket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasketSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BasketSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BasketSerializers'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasketSerializers'
+          description: ''
+    patch:
+      operationId: basket_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - basket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBasketSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBasketSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBasketSerializers'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasketSerializers'
+          description: ''
+    delete:
+      operationId: basket_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - basket
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/load_products/:
+    post:
+      operationId: load_products_create
+      tags:
+      - load_products
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/orders/:
+    get:
+      operationId: orders_list
+      tags:
+      - orders
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrdersSerializers'
+          description: ''
+    post:
+      operationId: orders_create
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrdersSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrdersSerializers'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersSerializers'
+          description: ''
+  /api/v1/orders/{id}/:
+    get:
+      operationId: orders_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersSerializers'
+          description: ''
+    put:
+      operationId: orders_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrdersSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrdersSerializers'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersSerializers'
+          description: ''
+    patch:
+      operationId: orders_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrdersSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrdersSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrdersSerializers'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersSerializers'
+          description: ''
+    delete:
+      operationId: orders_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/product/:
+    get:
+      operationId: product_list
+      tags:
+      - product
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductSerializers'
+          description: ''
+    post:
+      operationId: product_create
+      tags:
+      - product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductSerializers'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductSerializers'
+          description: ''
+  /api/v1/product/{id}/:
+    get:
+      operationId: product_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Товар.
+        required: true
+      tags:
+      - product
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductSerializers'
+          description: ''
+    put:
+      operationId: product_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Товар.
+        required: true
+      tags:
+      - product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductSerializers'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductSerializers'
+          description: ''
+    patch:
+      operationId: product_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Товар.
+        required: true
+      tags:
+      - product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProductSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProductSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProductSerializers'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductSerializers'
+          description: ''
+    delete:
+      operationId: product_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Товар.
+        required: true
+      tags:
+      - product
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/shop/:
+    get:
+      operationId: shop_list
+      tags:
+      - shop
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShopProductSerializers'
+          description: ''
+    post:
+      operationId: shop_create
+      tags:
+      - shop
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopProductSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShopProductSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShopProductSerializers'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductSerializers'
+          description: ''
+  /api/v1/shop/{id}/:
+    get:
+      operationId: shop_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Товары в магазине.
+        required: true
+      tags:
+      - shop
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductSerializers'
+          description: ''
+    put:
+      operationId: shop_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Товары в магазине.
+        required: true
+      tags:
+      - shop
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopProductSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShopProductSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShopProductSerializers'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductSerializers'
+          description: ''
+    patch:
+      operationId: shop_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Товары в магазине.
+        required: true
+      tags:
+      - shop
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedShopProductSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedShopProductSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedShopProductSerializers'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopProductSerializers'
+          description: ''
+    delete:
+      operationId: shop_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Товары в магазине.
+        required: true
+      tags:
+      - shop
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Activation:
+      type: object
+      properties:
+        uid:
+          type: string
+        token:
+          type: string
+      required:
+      - token
+      - uid
+    BasketSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        product_model:
+          type: string
+          title: Модель
+          readOnly: true
+        category:
+          type: string
+          title: Наименование
+          readOnly: true
+        shop_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        user_id:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        create_at:
+          type: string
+          format: date-time
+          readOnly: true
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Количество
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Цена
+        product:
+          type: integer
+          title: Товар
+        shop:
+          type: integer
+          title: Магазин
+        shop_products:
+          type: integer
+          title: Наличие в магазине
+        user:
+          type: integer
+          title: OrderProducts
+      required:
+      - category
+      - create_at
+      - id
+      - modified
+      - price
+      - product
+      - product_model
+      - product_name
+      - quantity
+      - shop
+      - shop_name
+      - shop_products
+      - user
+      - user_id
+    OrdersSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        create_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Цена
+        user:
+          type: integer
+          title: Пользователь
+      required:
+      - create_at
+      - id
+      - modified
+      - price
+      - status
+      - user
+    PasswordResetConfirm:
+      type: object
+      properties:
+        uid:
+          type: string
+        token:
+          type: string
+        new_password:
+          type: string
+      required:
+      - new_password
+      - token
+      - uid
+    PatchedBasketSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        product_model:
+          type: string
+          title: Модель
+          readOnly: true
+        category:
+          type: string
+          title: Наименование
+          readOnly: true
+        shop_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        user_id:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        create_at:
+          type: string
+          format: date-time
+          readOnly: true
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Количество
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Цена
+        product:
+          type: integer
+          title: Товар
+        shop:
+          type: integer
+          title: Магазин
+        shop_products:
+          type: integer
+          title: Наличие в магазине
+        user:
+          type: integer
+          title: OrderProducts
+    PatchedOrdersSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        create_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Цена
+        user:
+          type: integer
+          title: Пользователь
+    PatchedProductSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        create_at:
+          type: string
+          format: date-time
+          readOnly: true
+        external:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Внешний ИД
+        name:
+          type: string
+          title: Наименование
+          maxLength: 100
+        model:
+          type: string
+          title: Модель
+          maxLength: 50
+        items:
+          type: string
+          title: Параметры
+        user:
+          type: integer
+          title: Пользователь
+        category:
+          type: integer
+          title: Категория
+    PatchedShopProductSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        product_id:
+          type: string
+          readOnly: true
+        product_model:
+          type: string
+          title: Модель
+          readOnly: true
+        category:
+          type: string
+          title: Наименование
+          readOnly: true
+        shop_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        shop_id:
+          type: string
+          readOnly: true
+        user_id:
+          type: string
+          readOnly: true
+        create_at:
+          type: string
+          format: date-time
+          readOnly: true
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Цена
+        price_rrc:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Розничная цена
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        shop:
+          type: integer
+          title: Магазин
+        product:
+          type: integer
+          title: Товар
+    PatchedUser:
+      type: object
+      properties:
+        username:
+          type: string
+          title: Имя пользователя
+          description: Обязательное поле. Не более 150 символов. Только буквы, цифры
+            и символы @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Адрес электронной почты
+    ProductSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        create_at:
+          type: string
+          format: date-time
+          readOnly: true
+        external:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Внешний ИД
+        name:
+          type: string
+          title: Наименование
+          maxLength: 100
+        model:
+          type: string
+          title: Модель
+          maxLength: 50
+        items:
+          type: string
+          title: Параметры
+        user:
+          type: integer
+          title: Пользователь
+        category:
+          type: integer
+          title: Категория
+      required:
+      - category
+      - category_name
+      - create_at
+      - external
+      - id
+      - items
+      - model
+      - name
+      - user
+    SendEmailReset:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    SetPassword:
+      type: object
+      properties:
+        new_password:
+          type: string
+        current_password:
+          type: string
+      required:
+      - current_password
+      - new_password
+    SetUsername:
+      type: object
+      properties:
+        current_password:
+          type: string
+        new_email:
+          type: string
+          format: email
+          title: Адрес электронной почты
+          maxLength: 254
+      required:
+      - current_password
+      - new_email
+    ShopProductSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        product_id:
+          type: string
+          readOnly: true
+        product_model:
+          type: string
+          title: Модель
+          readOnly: true
+        category:
+          type: string
+          title: Наименование
+          readOnly: true
+        shop_name:
+          type: string
+          title: Наименование
+          readOnly: true
+        shop_id:
+          type: string
+          readOnly: true
+        user_id:
+          type: string
+          readOnly: true
+        create_at:
+          type: string
+          format: date-time
+          readOnly: true
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Цена
+        price_rrc:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Розничная цена
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        shop:
+          type: integer
+          title: Магазин
+        product:
+          type: integer
+          title: Товар
+      required:
+      - category
+      - create_at
+      - id
+      - price
+      - price_rrc
+      - product
+      - product_id
+      - product_model
+      - product_name
+      - quantity
+      - shop
+      - shop_id
+      - shop_name
+      - user_id
+    StatusEnum:
+      enum:
+      - basket
+      - confirmed
+      - new
+      - assembled
+      - sent
+      - delivered
+      - canceled
+      type: string
+    TokenCreate:
+      type: object
+      properties:
+        password:
+          type: string
+        email:
+          type: string
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          title: Имя пользователя
+          description: Обязательное поле. Не более 150 символов. Только буквы, цифры
+            и символы @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Адрес электронной почты
+      required:
+      - email
+      - id
+      - username
+    UserCreate:
+      type: object
+      properties:
+        username:
+          type: string
+          title: Имя пользователя
+          description: Обязательное поле. Не более 150 символов. Только буквы, цифры
+            и символы @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Адрес электронной почты
+          maxLength: 254
+        id:
+          type: integer
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - id
+      - password
+      - username
+    UsernameResetConfirm:
+      type: object
+      properties:
+        new_email:
+          type: string
+          format: email
+          title: Адрес электронной почты
+          maxLength: 254
+      required:
+      - new_email

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.vk',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -164,7 +165,8 @@ AUTHENTICATION_BACKENDS = (
 )
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 # SOCIALACCOUNT_PROVIDERS = {
 #     'telegram': {
@@ -176,3 +178,9 @@ REST_FRAMEWORK = {
 #             'key':VK_API_KEY
 #     }
 # }
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Market API',
+    'DESCRIPTION': 'Описание',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
