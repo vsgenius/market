@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {%block content%}
 <h1>Вход</h1>
 <hr>
@@ -14,4 +13,27 @@
 </form>
 <hr>
     <a href="{% url 'password_reset' %}">Сброс  пароля</a>
+<hr>
+<!--    <a href="auth_social/telegram/login/">Вход через Телеграмм</a>-->
+{% load socialaccount %}
+
+{% get_providers as socialaccount_providers %}
+
+{% for provider in socialaccount_providers %}
+{% if provider.id == "openid" %}
+{% for brand in provider.get_brands %}
+<li>
+  <a title="{{brand.name}}"
+     class="socialaccount_provider {{provider.id}} {{brand.id}}"
+     href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
+     >{{brand.name}}</a>
+</li>
+{% endfor %}
+{% endif %}
+<li>
+  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}"
+     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">Вход через ВК</a>
+</li>
+{% endfor %}
 {% endblock %}
+

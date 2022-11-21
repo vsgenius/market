@@ -13,6 +13,6 @@ urlpatterns = [
     path('base_auth/',include('rest_framework.urls')),
     path('auth/',include('djoser.urls')),
     path('auth_token/',include('djoser.urls.authtoken')),
-    path('load_products/',PartnerUpdate.as_view(),name='load_products')
+    path('load_products/',PartnerUpdate.as_view(),name='load_products'),
 
 ]

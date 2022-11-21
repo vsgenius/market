@@ -29,5 +29,6 @@ urlpatterns = [
     path('create_product/', category,
          name='create_product'),
     path('login_ajax/', LoginAjaxView.as_view(), name='login_ajax'),
-    path('create_product_form/',CreateAjaxView.as_view(),name='create_product_form')
+    path('create_product_form/',CreateAjaxView.as_view(),name='create_product_form'),
+    path('login/auth_social/', include('allauth.urls')),
 ]

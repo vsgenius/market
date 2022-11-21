@@ -46,7 +46,11 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'rest_framework.authtoken',
     'djoser',
-    'frontend'
+    'frontend.apps.FrontendConfig',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.vk',
 ]
 
 MIDDLEWARE = [
@@ -73,8 +77,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'config.context_processor.get_context_data',
-                'config.context_processor.get_context_data2'
-
+                'config.context_processor.get_context_data2',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -150,3 +154,25 @@ EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+VK_APP_ID = os.getenv('VK_APP_ID')
+VK_API_SECRET = os.getenv('VK_API_SECRET')
+VK_API_KEY = os.getenv('VK_API_KEY')
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+    )
+}
+# SOCIALACCOUNT_PROVIDERS = {
+#     'telegram': {
+#         'TOKEN': 'insert-token-received-from-botfather'
+#     },
+#     'vk': {
+#             'client_id': VK_APP_ID,
+#             'secret': VK_API_SECRET,
+#             'key':VK_API_KEY
+#     }
+# }

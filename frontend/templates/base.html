@@ -37,8 +37,8 @@
 <!--                  <button type="button" class="btn btn-primary" href="{% url 'logout' %}">Выход</button>-->
     <a class="nav-link active" href="{% url 'logout' %}">Выход</a> &emsp;
 {% else %}
-<!--    <a class="nav-link active" href="{% url 'login' %}">Вход</a> &emsp;-->
-          <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#login_ajax">Вход</a>&emsp;
+    <a class="nav-link active" href="{% url 'login' %}">Вход</a> &emsp;
+<!--          <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#x§">Вход</a>&emsp;-->
     <a class="nav-link active" href="{% url 'register' %}">Регистрация</a>
 {%endif%}
                      {% if user.is_authenticated %}
