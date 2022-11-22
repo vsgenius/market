@@ -9,6 +9,7 @@ router.register('product',ProductViewSet,'product')
 router.register('shop',ShopProductViewSet,'shop')
 router.register('basket',BasketViewSet,'basket')
 router.register('orders',OrdersViewSet,'orders')
+router.register('categories',CategoryViewSet,'categories')
 urlpatterns = [
     path('',include(router.urls)),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),

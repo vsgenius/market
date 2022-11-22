@@ -123,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+SITE_ID = 1
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -166,21 +166,18 @@ AUTHENTICATION_BACKENDS = (
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
     ),
+    'TEST_REQUEST_DEFAULT_FORMAT':'json',
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
-# SOCIALACCOUNT_PROVIDERS = {
-#     'telegram': {
-#         'TOKEN': 'insert-token-received-from-botfather'
-#     },
-#     'vk': {
-#             'client_id': VK_APP_ID,
-#             'secret': VK_API_SECRET,
-#             'key':VK_API_KEY
-#     }
-# }
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Market API',
     'DESCRIPTION': 'Описание',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+APPEND_SLASH = False
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_TRANSPORT = 'redis'
+CELERY_RESULT_BACKEND = 'django-db'

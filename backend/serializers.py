@@ -4,7 +4,7 @@ from .models import *
 
 class CategorySerializers(serializers.ModelSerializer):
     products = serializers.StringRelatedField(many=True,read_only=True)
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault)
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault)
 
     class Meta:
         model = Category
@@ -12,7 +12,7 @@ class CategorySerializers(serializers.ModelSerializer):
 
 
 class ShopSerializers(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault)
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault)
 
     class Meta:
         model = Shop
@@ -28,7 +28,7 @@ class ProductSerializers(serializers.ModelSerializer):
 
 
 class ShopProductSerializers(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault)
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault)
     product_name = serializers.ReadOnlyField(source='product.name')
     product_id = serializers.ReadOnlyField(source='product.pk')
     product_model = serializers.ReadOnlyField(source='product.model')
