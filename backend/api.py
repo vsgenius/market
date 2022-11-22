@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 
 from .serializers import *
 from .models import *
@@ -11,6 +12,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = CategorySerializers
+    throttle_classes = [UserRateThrottle,AnonRateThrottle]
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -19,6 +21,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = ProductSerializers
+    throttle_classes = [UserRateThrottle,AnonRateThrottle]
 
 
 class OrdersViewSet(viewsets.ModelViewSet):
@@ -27,6 +30,7 @@ class OrdersViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = OrdersSerializers
+    throttle_classes = [UserRateThrottle,AnonRateThrottle]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -67,6 +71,7 @@ class ShopProductViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = ShopProductSerializers
+    throttle_classes = [UserRateThrottle,AnonRateThrottle]
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -86,6 +91,7 @@ class BasketViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = BasketSerializers
+    throttle_classes = [UserRateThrottle,AnonRateThrottle]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
